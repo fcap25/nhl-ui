@@ -137,7 +137,7 @@ function TeamSummary() {
                       <Button
                         size="small"
                         component={Link}
-                        to={`/${team.abbreviation}`}
+                        href={`/${team.abbreviation}`}
                       >
                         Player Stats
                       </Button>
@@ -211,7 +211,7 @@ function TeamSummary() {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  <Link underline="hover" to={`/${row.abbreviation}`}>
+                  <Link underline="hover" href={`/${row.abbreviation}`}>
                     {row.teamFullName}
                   </Link>
                 </TableCell>
