@@ -11,7 +11,7 @@ function App() {
 		<Router>
 		  <Routes>
 			<Route   path="/" element={<TeamSummary />} exact />
-			<Route path="/team/:teamAbbreviation" element={<TeamDetails />} />
+			<Route path="/:teamAbbreviation" element={<TeamDetails />} />
 		  </Routes>
 		</Router>
 	  );

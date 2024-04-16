@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Grid, Card, CardContent, Typography, CardActions, Button, Collapse, CardMedia, Table, TableContainer, TableRow, TableCell, Paper, TableHead, TableBody, Tooltip } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Rink from './assets/Ice_Rink.png';
+import { abbreviations } from './Abbr';
 
 function getLogoPath(abbreviation) {
 	try {
@@ -20,15 +21,8 @@ function TeamSummary() {
 	//GET https://api.nhle.com/stats/rest/en/team/summary
 	//GET https://api-web.nhle.com/v1/club-stats-season/TEAM_ABBR
 
-	const Abbreviations = {"TOR": "Toronto Maple Leafs", "MTL": "Montréal Canadiens", "OTT": "Ottawa Senators", "VAN": "Vancouver Canucks", "CGY": "Calgary Flames", "EDM": "Edmonton Oilers", "WPG": "Winnipeg Jets", 
-	"NSH": "Nashville Predators", "MIN": "Minnesota Wild", "STL": "St. Louis Blues", "CHI": "Chicago Blackhawks", "DET": "Detroit Red Wings", "CBJ": "Columbus Blue Jackets", "BUF": "Buffalo Sabres", 
-	"NYR": "New York Rangers", "NYI": "New York Islanders", "NJD": "New Jersey Devils", "PHI": "Philadelphia Flyers", "PIT": "Pittsburgh Penguins", "WSH": "Washington Capitals", "CAR": "Carolina Hurricanes", 
-	"TBL": "Tampa Bay Lightning", "FLA": "Florida Panthers", "DAL": "Dallas Stars", "COL": "Colorado Avalanche", "VGK": "Vegas Golden Knights", "ANA": "Anaheim Ducks", "LAK": "Los Angeles Kings", "SJS": "San Jose Sharks", 
-	"ARI": "Arizona Coyotes", "BOS": "Boston Bruins", "SEA": "Seattle Kraken", "ATL": "Atlanta Thrashers", "WAS": "Washington Capitals", "WIN": "Winnipeg Jets", "PHX": "Phoenix Coyotes", "MNS": "Minnesota North Stars", 
-	"HFD": "Hartford Whalers", "QUE": "Quebec Nordiques"}
-
 	const normalizedAbbreviations = Object.fromEntries(
-		Object.entries(Abbreviations).map(([key, value]) => [key, value.toLowerCase().trim()])
+		Object.entries(abbreviations).map(([key, value]) => [key, value.toLowerCase().trim()])
 	);
 
     useEffect(() => {
@@ -43,26 +37,10 @@ function TeamSummary() {
             .catch(error => console.error('Error fetching teams', error));
     }, []);
 
-	//can you sort the teams by points so that i can display the standings in order?
 	teams.sort((a, b) => (a.points < b.points) ? 1 : -1);
 
     const handleExpandClick = (id) => {
         setExpandedId(expandedId === id ? -1 : id); // Toggle expansion
-    };
-
-	const scrollToRow = (e, teamId) => {
-		//prevent the default behavior of the anchor tag
-		e.preventDefault();
-		console.log("Scrolling to row:", teamId);
-        const row = document.getElementById(`team-row-${teamId}`);
-        if (row) {
-			console.log("Found row, scrolling now...");
-            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setHighlightedRow(teamId); // Set the highlighted row state
-            setTimeout(() => {
-                setHighlightedRow(null); // Remove highlight after some time
-            }, 3000);
-        }
     };
 
     return (
@@ -72,20 +50,20 @@ function TeamSummary() {
             backgroundPosition: 'center',
             minHeight: '100vh',
 		}}>
-		<Typography variant="h3" component="h1" gutterBottom align='center' padding={2}>Welcome to NHL StatHub!</Typography>
-		<Typography variant="h4" component="h1" gutterBottom align='center' >Team Summaries</Typography>
+		<Typography variant="h3" gutterBottom align='center' padding={2}>Welcome to NHL StatHub!</Typography>
+		<Typography variant="h4" gutterBottom align='center'>Team Summaries</Typography>
+		<Typography variant="body1" gutterBottom align='center'>Click on a team to see more stats. (All teams in standings order).</Typography>
         <Grid container spacing={2} padding={10}>
             {teams.map(team => (
-                <Grid item key={team.teamId} xs={12} sm={6} md={2}>
+                <Grid item key={team.teamId} xs={12} sm={6} md={1.5} >
                     <Card style={{backgroundColor: '#0A182F'}}  >
 						<CardMedia
 							component="img"
-							height="140"
 							image={getLogoPath(team.abbreviation)}
 							alt={team.teamFullName}
 						/>
                         <CardContent >
-                            <Typography variant="h5" color="white" component="div">{team.teamFullName}</Typography>
+                            <Typography variant="h6" color="white" component="div">{team.teamFullName}</Typography>
                             <Typography color="white">Games Played: {team.gamesPlayed}</Typography>
                         </CardContent>
                         <Collapse in={expandedId === team.teamId} timeout="auto" unmountOnExit>
@@ -94,8 +72,8 @@ function TeamSummary() {
                                 <Typography color="white" paragraph>Losses: {team.losses}</Typography>
                                 <Typography color="white" paragraph>Points: {team.points}</Typography>
                                 <CardActions>
-                                    <Button size="small" component={Link} to={`/team/${team.abbreviation}`}>
-                                        Full Stats
+                                    <Button size="small" component={Link} to={`/${team.abbreviation}`}>
+                                        Player Stats
                                     </Button>
 									<Button
     size="small"

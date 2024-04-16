@@ -1,0 +1,6 @@
+export const abbreviations = {"TOR": "Toronto Maple Leafs", "MTL": "Montréal Canadiens", "OTT": "Ottawa Senators", "VAN": "Vancouver Canucks", "CGY": "Calgary Flames", "EDM": "Edmonton Oilers", "WPG": "Winnipeg Jets", 
+"NSH": "Nashville Predators", "MIN": "Minnesota Wild", "STL": "St. Louis Blues", "CHI": "Chicago Blackhawks", "DET": "Detroit Red Wings", "CBJ": "Columbus Blue Jackets", "BUF": "Buffalo Sabres", 
+"NYR": "New York Rangers", "NYI": "New York Islanders", "NJD": "New Jersey Devils", "PHI": "Philadelphia Flyers", "PIT": "Pittsburgh Penguins", "WSH": "Washington Capitals", "CAR": "Carolina Hurricanes", 
+"TBL": "Tampa Bay Lightning", "FLA": "Florida Panthers", "DAL": "Dallas Stars", "COL": "Colorado Avalanche", "VGK": "Vegas Golden Knights", "ANA": "Anaheim Ducks", "LAK": "Los Angeles Kings", "SJS": "San Jose Sharks", 
+"ARI": "Arizona Coyotes", "BOS": "Boston Bruins", "SEA": "Seattle Kraken", "ATL": "Atlanta Thrashers", "WAS": "Washington Capitals", "WIN": "Winnipeg Jets", "PHX": "Phoenix Coyotes", "MNS": "Minnesota North Stars", 
+"HFD": "Hartford Whalers", "QUE": "Quebec Nordiques"}
