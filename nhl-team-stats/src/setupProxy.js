@@ -1,25 +1,25 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
-    '/api',
+    "/api",
     createProxyMiddleware({
-      target: 'https://api.nhle.com',
+      target: "https://api.nhle.com",
       changeOrigin: true,
-      pathRewrite: {'^/api' : ''}
-    })
+      pathRewrite: { "^/api": "" },
+    }),
   );
 
   app.use(
-    '/api-web',
+    "/api-web",
     createProxyMiddleware({
-      target: 'https://api-web.nhle.com',
+      target: "https://api-web.nhle.com",
       changeOrigin: true,
-      pathRewrite: {'^/api-web' : ''},
-	  logLevel: 'debug',
-	  onProxyReq: function(proxyReq, req, res) {
-        console.log('Proxying request:', req.url);
-      }
-    })
+      pathRewrite: { "^/api-web": "" },
+      logLevel: "debug",
+      onProxyReq: function (proxyReq, req, res) {
+        console.log("Proxying request:", req.url);
+      },
+    }),
   );
 };
