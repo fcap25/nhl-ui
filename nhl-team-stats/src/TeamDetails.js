@@ -9,7 +9,7 @@ function TeamDetails() {
     useEffect(() => {
         const fetchTeamStats = async () => {
             try {
-                const response = await axios.get(`https://api-web.nhle.com/v1/club-stats-season/${teamAbbreviation}`);
+                const response = await axios.get(`https://api-web.nhle.com/v1/club-stats-season/TOR`); // api-web.nhle.com/v1/club-stats/TOR/now - 
                 setTeamStats(response.data);
             } catch (error) {
                 console.error('Failed to fetch team stats', error);

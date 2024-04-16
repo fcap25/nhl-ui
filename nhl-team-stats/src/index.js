@@ -3,11 +3,23 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import iceRinkImage from './assets/Ice_Rink1.png';
+
+const styles = {
+    root: {
+        backgroundImage: `url(${iceRinkImage})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        height: '100vh',
+        width: '100vw',
+    },
+};
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <App style={styles.root} />
   </React.StrictMode>
 );
 

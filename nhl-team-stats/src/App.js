@@ -4,11 +4,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import TeamSummary from './TeamSummary';
 import TeamDetails from './TeamDetails';
 
+
+
 function App() {
 	return (
 		<Router>
 		  <Routes>
-			<Route path="/" element={<TeamSummary />} exact />
+			<Route   path="/" element={<TeamSummary />} exact />
 			<Route path="/team/:teamAbbreviation" element={<TeamDetails />} />
 		  </Routes>
 		</Router>
