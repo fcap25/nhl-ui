@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { abbreviations } from './Abbr';
-import { Box, Table, TableContainer, Collapse, CardMedia, TableRow, TableCell, Paper, TableHead, TableBody, Typography, Grid, Card, CardContent, Select, MenuItem } from '@mui/material';
+import { Box, Table, TableContainer, Collapse, CardMedia, TableRow, TableCell, Paper, TableHead, TableBody, Typography, Grid, Card, CardContent, Select, MenuItem, Badge, Chip } from '@mui/material';
 
 function getLogoPath(abbreviation) {
 	try {
@@ -65,55 +65,89 @@ function TeamDetails() {
     };
 
 	const teamName = abbreviations[teamAbbreviation] || 'Unknown Team';
+	//const playoffStatus = playerStats[selectedSeason].gameTypes.includes(3) ? 'Made Playoffs' : 'No Playoffs';
 
-	console.log("szx", selectedSeason);
+	//trim the teamStats to only include the last 5 seasons
+	const playoffFiveSeasons = teamStats.slice(0, 5);
+	
+	console.log("szn", playoffFiveSeasons);
 
-	console.log("player", playerStats);
+	//extract the gameTypes from the last 5 seasons into object where season is the key and gameTypes is the value
+	const gameTypes = Object.fromEntries(playoffFiveSeasons.map((season) => [season.season, season.gameTypes]));
 
-    return (
-		<>
-        <div style={{backgroundImage: `url(${getLogoPath(teamAbbreviation)})`, backgroundSize: 'contain', backgroundPosition: 'center', minHeight: '90vh', backgroundAttachment: 'fixed'}}>
-		<Box bgcolor={"transparent"} style={{"backdrop-filter": "blur(10px)"}} padding={2}>
-			<Typography variant="h4" color={"black"} gutterBottom align='center' padding={2}>{teamName} Advanced Player Statistics</Typography>
-			<Typography variant="h6" color={"black"} gutterBottom align='center' padding={2}>(Click to expand for Statistics)</Typography>
+	console.log("gameTypes", gameTypes);
+
+	const positions = {"C": "Center", "D": "Defenseman", "G": "Goalie", "L": "Left Wing", "R": "Right Wing"};
+
+	return (
+		<Box sx={{
+            position: 'relative',
+            backgroundImage: `url(${getLogoPath(teamAbbreviation)})`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            minHeight: '100vh', // ensure it covers the full view height
+            backgroundAttachment: 'fixed'
+        }}>
+		<Box sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0,0,0,0.5)', // semi-transparent overlay
+                zIndex: 1 // ensure it's above the background image but below the content
+            }} />
+		<Box sx={{ position: 'relative', zIndex: 2, p: 2 }}>
+			<Typography variant="h4" gutterBottom align='center' padding={2} color={"whitesmoke"}>{teamName} Advanced Player Statistics</Typography>
+			<Typography variant="h6" gutterBottom align='center' padding={2} color={"whitesmoke"}>(Click to expand for Statistics)</Typography>
 			<Select
-                value={selectedSeason}
-                onChange={handleSeasonChange}
-                inputProps={{ 'aria-label': 'Without label' }}
+				value={selectedSeason}
+				onChange={handleSeasonChange}
+				inputProps={{ 'aria-label': 'Without label' }}
 				style={{marginLeft: "10%", width: "80%", backgroundColor: "white"}}
-            >
-                {Object.keys(playerStats).map((season) => (
-                    <MenuItem key={season} value={season}>{season}</MenuItem>
-                ))}
-            </Select>
-		</Box>
+			>
+				{Object.keys(playerStats).map((season) => {
+        // Format the season string by inserting a hyphen
+        const formattedSeason = `${season.substring(0, 4)}-${season.substring(4)}`;
+        return (
+            <MenuItem key={season} value={season}>
+                {formattedSeason}
+            </MenuItem>
+        );
+    })}
+			</Select>
+			<Chip label={gameTypes[selectedSeason].includes(3) ? 'Made Playoffs' : 'No Playoffs'} color={gameTypes[selectedSeason].includes(3) ? 'primary' : 'secondary'} style={{marginLeft: "10%", marginTop: "1%"}} />
 			<Grid container spacing={2} padding={4}>
-                {playerStats[selectedSeason].skaters.map((player) => (
-                    <Grid item key={player.playerId} xs={12} sm={6} md={1}>
-                        <Card onClick={() => handleExpandClick(player.playerId)} style={{cursor: "pointer"}}>
-                            <CardMedia
-                                component="img"
-                                //height="140"
-                                image={player.headshot}
-                                alt={`${player.firstName} ${player.lastName}`}
-                            />
-                            <CardContent>
-                                <Typography variant="h6">{`${player.firstName.default} ${player.lastName.default}`}</Typography>
-                                <Typography>{`Position: ${player.positionCode}`}</Typography>
-                            </CardContent>
+				{playerStats[selectedSeason].skaters.map((player) => (
+					<Grid item key={player.playerId} xs={12} sm={6} md={1}>
+						<Card onClick={() => handleExpandClick(player.playerId)} style={{cursor: "pointer"}}>
+							<CardMedia
+								component="img"
+								//height="140"
+								image={player.headshot}
+								alt={`${player.firstName} ${player.lastName}`}
+								//raised={true}
+							/>
+							<CardContent>
+								<Typography variant="h6">{`${player.firstName.default}`}</Typography>
+								<Typography variant="h6">{`${player.lastName.default}`}</Typography>
+								<Typography>{positions[player.positionCode]}`</Typography>
+							</CardContent>
 							<Collapse in={expandedId === player.playerId} timeout="auto" unmountOnExit>
-                                <CardContent>
-                                    <Typography>{`Points: ${player.points}`}</Typography>
-                                    <Typography>{`Goals: ${player.goals}`}</Typography>
+								<CardContent>
+									<Typography>{`Points: ${player.points}`}</Typography>
+									<Typography>{`Goals: ${player.goals}`}</Typography>
 									<Typography>{`Assists: ${player.assists}`}</Typography>
-                                    <Typography>{`Shooting %: ${(player.shootingPctg *100).toFixed(0)}`}</Typography>
-                                </CardContent>
-                            </Collapse>
-                        </Card>
-                    </Grid>
-                ))}
+									<Typography>{`Shooting %: ${(player.shootingPctg *100).toFixed(0)}`}</Typography>
+								</CardContent>
+							</Collapse>	
+						</Card>
+					</Grid>
+				))}
 						</Grid>
-			<Typography variant="h5" color={"black"}  align='start' padding={2}>{teamName} Goalie Statistics</Typography>	
+			<Box bgcolor={"transparent"} style={{"backdrop-filter": "blur(10px)"}} padding={2}>
+			<Typography variant="h5" color={"whitesmoke"}  align='start' padding={2}>{teamName} Goalie Statistics</Typography>	
+			</Box>
 			<Grid container spacing={2} padding={4}>
 				{playerStats[selectedSeason].goalies.map((player) => (
 					<Grid item key={player.playerId} xs={12} sm={6} md={1}>
@@ -125,29 +159,30 @@ function TeamDetails() {
 								alt={`${player.firstName} ${player.lastName}`}
 							/>
 							<CardContent>
-								<Typography variant="h6">{`${player.firstName.default} ${player.lastName.default}`}</Typography>
-								<Typography>{`Position: Goalie`}</Typography>
+								<Typography variant="h6">{`${player.firstName.default}`}</Typography>
+								<Typography variant="h6">{`${player.lastName.default}`}</Typography>
+								<Typography>{`Goalie`}</Typography>
 							</CardContent>
 							<Collapse in={expandedId === player.playerId} timeout="auto" unmountOnExit>
-                                <CardContent>
-                                    <Typography>{`Games Played: ${player.gamesPlayed}`}</Typography>
-                                    <Typography>{`Games Started: ${player.gamesStarted}`}</Typography>
-                                    <Typography>{`Goals Against: ${player.goalsAgainst}`}</Typography>
+								<CardContent>
+									<Typography>{`Games Played: ${player.gamesPlayed}`}</Typography>
+									<Typography>{`Games Started: ${player.gamesStarted}`}</Typography>
+									<Typography>{`Goals Against: ${player.goalsAgainst}`}</Typography>
 									<Typography>{`Losses: ${player.losses}`}</Typography>
 									<Typography>{`Points: ${player.points}`}</Typography>
-                                    <Typography>{`Save %: ${(player.savePercentage * 100).toFixed(0)}`}</Typography>
+									<Typography>{`Save %: ${(player.savePercentage * 100).toFixed(0)}`}</Typography>
 									<Typography>{`Saves: ${player.saves}`}</Typography>
 									<Typography>{`Shots Against: ${player.shotsAgainst}`}</Typography>
 									<Typography>{`Shutouts: ${player.shutouts}`}</Typography>
-                                </CardContent>
-                            </Collapse>
+								</CardContent>
+							</Collapse>
 						</Card>
 					</Grid>
 				))}
 			</Grid>
-        </div>
-		</>
-    );
+		</Box>
+		</Box>
+	);
 }
 
 export default TeamDetails;
