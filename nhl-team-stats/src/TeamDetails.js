@@ -13,7 +13,9 @@ import {
   Select,
   MenuItem,
   Chip,
+  Button,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function getLogoPath(abbreviation) {
   try {
@@ -29,7 +31,7 @@ function TeamDetails() {
   const [playerStats, setPlayerStats] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState("20232024");
   const [expandedId, setExpandedId] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchRecent = async () => {
       try {
@@ -125,6 +127,12 @@ function TeamDetails() {
         }}
       />
       <Box sx={{ position: "relative", zIndex: 2, p: 2 }}>
+        <Button
+          style={{ backgroundColor: "#0A182F" }}
+          onClick={() => navigate("/")}
+        >
+          Back to Summary
+        </Button>
         <Typography
           variant="h4"
           gutterBottom
