@@ -187,7 +187,7 @@ function TeamDetails() {
                 <CardContent>
                   <Typography variant="h6">{`${player.firstName.default}`}</Typography>
                   <Typography variant="h6">{`${player.lastName.default}`}</Typography>
-                  <Typography>{positions[player.positionCode]}`</Typography>
+                  <Typography>{positions[player.positionCode]}</Typography>
                 </CardContent>
                 <Collapse
                   in={expandedId === player.playerId}
