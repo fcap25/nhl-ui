@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 import Rink from "./assets/Ice_Rink.png";
 import { abbreviations } from "./Abbr";
+import TextField from "@mui/material/TextField";
 
 function getLogoPath(abbreviation) {
   try {
@@ -36,6 +37,7 @@ function TeamSummary() {
   const [teams, setTeams] = useState([]);
   const [expandedId, setExpandedId] = useState(-1); // To track which card is expanded
   const [highlightedRow, setHighlightedRow] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   //GET https://api.nhle.com/stats/rest/en/team/summary
   //GET https://api-web.nhle.com/v1/club-stats-season/TEAM_ABBR
@@ -91,94 +93,111 @@ function TeamSummary() {
       <Typography variant="body1" gutterBottom align="center">
         Click on a team to see more stats. (All teams in standings order).
       </Typography>
+      <div style={{ display: "flex", justifyContent: "start", marginLeft: 64 }}>
+        <TextField
+          id="filled-search"
+          label="Search Team..."
+          type="search"
+          variant="filled"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          padding={2}
+        />
+      </div>
       <Grid container spacing={2} padding={10}>
-        {teams.map((team, index) => (
-          <Grid item key={team.teamId} xs={12} sm={6} md={1.5}>
-            <Badge
-              badgeContent={<Typography fontSize={18}>{index + 1}</Typography>}
-              color={
-                index === 0
-                  ? "success"
-                  : index === 1
-                    ? "warning"
-                    : index === 2
-                      ? "error"
-                      : "primary"
-              }
-            >
-              <Card style={{ backgroundColor: "#0A182F" }}>
-                <CardMedia
-                  component="img"
-                  image={getLogoPath(team.abbreviation)}
-                  alt={team.teamFullName}
-                />
-                <CardContent>
-                  <Typography variant="h6" color="white" component="div">
-                    {team.teamFullName}
-                  </Typography>
-                  <Typography color="white">Points: {team.points}</Typography>
-                </CardContent>
-                <Collapse
-                  in={expandedId === team.teamId}
-                  timeout="auto"
-                  unmountOnExit
-                >
+        {teams
+          .filter((team) =>
+            team.teamFullName.toLowerCase().includes(searchTerm.toLowerCase()),
+          )
+          .map((team, index) => (
+            <Grid item key={team.teamId} xs={12} sm={6} md={1.5}>
+              <Badge
+                badgeContent={
+                  <Typography fontSize={18}>{index + 1}</Typography>
+                }
+                color={
+                  index === 0
+                    ? "success"
+                    : index === 1
+                      ? "warning"
+                      : index === 2
+                        ? "error"
+                        : "primary"
+                }
+              >
+                <Card style={{ backgroundColor: "#0A182F" }}>
+                  <CardMedia
+                    component="img"
+                    image={getLogoPath(team.abbreviation)}
+                    alt={team.teamFullName}
+                  />
                   <CardContent>
-                    <Typography color="white" paragraph>
-                      Wins: {team.wins}
+                    <Typography variant="h6" color="white" component="div">
+                      {team.teamFullName}
                     </Typography>
-                    <Typography color="white" paragraph>
-                      Losses: {team.losses}
-                    </Typography>
-                    <Typography color="white" paragraph>
-                      Games Played: {team.gamesPlayed}
-                    </Typography>
-                    <CardActions>
-                      <Button
-                        size="small"
-                        component={Link}
-                        href={`/${team.abbreviation}`}
-                      >
-                        Player Stats
-                      </Button>
-                      <Button
-                        size="small"
-                        component="a"
-                        href={`#team-row-${team.teamId}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          const row = document.getElementById(
-                            `team-row-${team.teamId}`,
-                          );
-                          if (row) {
-                            row.scrollIntoView({
-                              behavior: "smooth",
-                              block: "center",
-                            });
-                            setHighlightedRow(team.teamId);
-                            setTimeout(() => {
-                              setHighlightedRow(null);
-                            }, 3000);
-                          }
-                        }}
-                      >
-                        See in Standings
-                      </Button>
-                    </CardActions>
+                    <Typography color="white">Points: {team.points}</Typography>
                   </CardContent>
-                </Collapse>
-                <CardActions>
-                  <Button
-                    size="small"
-                    onClick={() => handleExpandClick(team.teamId)}
+                  <Collapse
+                    in={expandedId === team.teamId}
+                    timeout="auto"
+                    unmountOnExit
                   >
-                    {expandedId === team.teamId ? "Less Stats" : "More Stats"}
-                  </Button>
-                </CardActions>
-              </Card>
-            </Badge>
-          </Grid>
-        ))}
+                    <CardContent>
+                      <Typography color="white" paragraph>
+                        Wins: {team.wins}
+                      </Typography>
+                      <Typography color="white" paragraph>
+                        Losses: {team.losses}
+                      </Typography>
+                      <Typography color="white" paragraph>
+                        Games Played: {team.gamesPlayed}
+                      </Typography>
+                      <CardActions>
+                        <Button
+                          size="small"
+                          component={Link}
+                          href={`/${team.abbreviation}`}
+                        >
+                          Player Stats
+                        </Button>
+                        <Button
+                          size="small"
+                          component="a"
+                          href={`#team-row-${team.teamId}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const row = document.getElementById(
+                              `team-row-${team.teamId}`,
+                            );
+                            if (row) {
+                              row.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center",
+                              });
+                              setHighlightedRow(team.teamId);
+                              setTimeout(() => {
+                                setHighlightedRow(null);
+                              }, 3000);
+                            }
+                          }}
+                        >
+                          See in Standings
+                        </Button>
+                      </CardActions>
+                    </CardContent>
+                  </Collapse>
+                  <CardActions>
+                    <Button
+                      size="small"
+                      onClick={() => handleExpandClick(team.teamId)}
+                    >
+                      {expandedId === team.teamId ? "Less Stats" : "More Stats"}
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Badge>
+            </Grid>
+          ))}
       </Grid>
       <TableContainer component={Paper} style={{ marginTop: 20 }}>
         <Table aria-label="simple table">

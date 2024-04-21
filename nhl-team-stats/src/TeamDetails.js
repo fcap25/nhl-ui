@@ -127,10 +127,7 @@ function TeamDetails() {
         }}
       />
       <Box sx={{ position: "relative", zIndex: 2, p: 2 }}>
-        <Button
-          style={{ backgroundColor: "#0A182F" }}
-          onClick={() => navigate("/")}
-        >
+        <Button variant="contained" onClick={() => navigate("/")}>
           Back to Summary
         </Button>
         <Typography
