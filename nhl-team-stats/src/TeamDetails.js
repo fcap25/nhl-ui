@@ -15,6 +15,7 @@ import {
   Chip,
   Button,
   CardActionArea,
+  TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -32,6 +33,7 @@ function TeamDetails() {
   const [playerStats, setPlayerStats] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState("20232024");
   const [expandedId, setExpandedId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     const fetchRecent = async () => {
@@ -176,47 +178,67 @@ function TeamDetails() {
           }
           style={{ marginLeft: "10%", marginTop: "1%" }}
         />
+        <TextField
+          label="Search Player..."
+          margin="dense"
+          type="search"
+          variant="filled"
+          value={searchTerm}
+          color="secondary"
+          onChange={(event) => setSearchTerm(event.target.value)}
+          style={{ marginLeft: 20, backgroundColor: "white", borderRadius: 4 }}
+        />
         <Grid container spacing={2} padding={4}>
-          {playerStats[selectedSeason].skaters.map((player) => (
-            <Grid item key={player.playerId} xs={12} sm={6} md={1.2}>
-              <Card raised>
-				<CardActionArea
-					onClick={() => handleExpandClick(player.playerId)}
-					style={{ cursor: "pointer" }}
-				>
-                <CardMedia
-                  component="img"
-                  image={player.headshot}
-                  alt={`${player.firstName} ${player.lastName}`}
-                  raised={true}
-                />
-                <CardContent>
-                  <Typography variant="h6">{`${player.firstName.default}`}</Typography>
-                  <Typography variant="h6">{`${player.lastName.default}`}</Typography>
-                  <Typography>{positions[player.positionCode]}</Typography>
-                </CardContent>
-                <Collapse
-                  in={expandedId === player.playerId}
-                  timeout="auto"
-                  unmountOnExit
-                >
-                  <CardContent>
-                    <Typography>{`Points: ${player.points}`}</Typography>
-                    <Typography>{`Goals: ${player.goals}`}</Typography>
-                    <Typography>{`Assists: ${player.assists}`}</Typography>
-                    <Typography>{`Shooting %: ${(player.shootingPctg * 100).toFixed(0)}`}</Typography>
-                  </CardContent>
-                </Collapse>
-				</CardActionArea>
-              </Card>
-            </Grid>
-          ))}
+          {playerStats[selectedSeason].skaters
+            .filter(
+              (player) =>
+                player.firstName.default
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                player.lastName.default
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()),
+            )
+            .map((player) => (
+              <Grid item key={player.playerId} xs={12} sm={6} md={1.2}>
+                <Card raised>
+                  <CardActionArea
+                    onClick={() => handleExpandClick(player.playerId)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <CardMedia
+                      component="img"
+                      image={player.headshot}
+                      alt={`${player.firstName} ${player.lastName}`}
+                      raised={true}
+                    />
+                    <CardContent>
+                      <Typography variant="h6">{`${player.firstName.default}`}</Typography>
+                      <Typography variant="h6">{`${player.lastName.default}`}</Typography>
+                      <Typography>{positions[player.positionCode]}</Typography>
+                    </CardContent>
+                    <Collapse
+                      in={expandedId === player.playerId}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <CardContent>
+                        <Typography>{`Points: ${player.points}`}</Typography>
+                        <Typography>{`Goals: ${player.goals}`}</Typography>
+                        <Typography>{`Assists: ${player.assists}`}</Typography>
+                        <Typography>{`Shooting %: ${(player.shootingPctg * 100).toFixed(0)}`}</Typography>
+                      </CardContent>
+                    </Collapse>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))}
         </Grid>
         <Box
           bgcolor={"transparent"}
           style={{ "backdrop-filter": "blur(10px)" }}
           padding={2}
-		  width={"fit-content"}
+          width={"fit-content"}
         >
           <Typography
             variant="h5"
@@ -231,39 +253,39 @@ function TeamDetails() {
           {playerStats[selectedSeason].goalies.map((player) => (
             <Grid item key={player.playerId} xs={12} sm={6} md={1.5}>
               <Card raised>
-				<CardActionArea
-					onClick={() => handleExpandClick(player.playerId)}
-					style={{ cursor: "pointer" }}
-				>
-                <CardMedia
-                  component="img"
-                  //height="140"
-                  image={player.headshot}
-                  alt={`${player.firstName} ${player.lastName}`}
-                />
-                <CardContent>
-                  <Typography variant="h6">{`${player.firstName.default}`}</Typography>
-                  <Typography variant="h6">{`${player.lastName.default}`}</Typography>
-                  <Typography>{`Goalie`}</Typography>
-                </CardContent>
-                <Collapse
-                  in={expandedId === player.playerId}
-                  timeout="auto"
-				  unmountOnExit
+                <CardActionArea
+                  onClick={() => handleExpandClick(player.playerId)}
+                  style={{ cursor: "pointer" }}
                 >
+                  <CardMedia
+                    component="img"
+                    //height="140"
+                    image={player.headshot}
+                    alt={`${player.firstName} ${player.lastName}`}
+                  />
                   <CardContent>
-                    <Typography>{`Games Played: ${player.gamesPlayed}`}</Typography>
-                    <Typography>{`Games Started: ${player.gamesStarted}`}</Typography>
-                    <Typography>{`Goals Against: ${player.goalsAgainst}`}</Typography>
-                    <Typography>{`Losses: ${player.losses}`}</Typography>
-                    <Typography>{`Points: ${player.points}`}</Typography>
-                    <Typography>{`Save %: ${(player.savePercentage * 100).toFixed(0)}`}</Typography>
-                    <Typography>{`Saves: ${player.saves}`}</Typography>
-                    <Typography>{`Shots Against: ${player.shotsAgainst}`}</Typography>
-                    <Typography>{`Shutouts: ${player.shutouts}`}</Typography>
+                    <Typography variant="h6">{`${player.firstName.default}`}</Typography>
+                    <Typography variant="h6">{`${player.lastName.default}`}</Typography>
+                    <Typography>{`Goalie`}</Typography>
                   </CardContent>
-                </Collapse>
-				</CardActionArea>
+                  <Collapse
+                    in={expandedId === player.playerId}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <CardContent>
+                      <Typography>{`Games Played: ${player.gamesPlayed}`}</Typography>
+                      <Typography>{`Games Started: ${player.gamesStarted}`}</Typography>
+                      <Typography>{`Goals Against: ${player.goalsAgainst}`}</Typography>
+                      <Typography>{`Losses: ${player.losses}`}</Typography>
+                      <Typography>{`Points: ${player.points}`}</Typography>
+                      <Typography>{`Save %: ${(player.savePercentage * 100).toFixed(0)}`}</Typography>
+                      <Typography>{`Saves: ${player.saves}`}</Typography>
+                      <Typography>{`Shots Against: ${player.shotsAgainst}`}</Typography>
+                      <Typography>{`Shutouts: ${player.shutouts}`}</Typography>
+                    </CardContent>
+                  </Collapse>
+                </CardActionArea>
               </Card>
             </Grid>
           ))}

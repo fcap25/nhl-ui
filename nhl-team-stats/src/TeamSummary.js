@@ -20,7 +20,7 @@ import {
   TableBody,
   Tooltip,
   Link,
-  CardActionArea
+  CardActionArea,
 } from "@mui/material";
 import Rink from "./assets/Ice_Rink.png";
 import { abbreviations } from "./Abbr";
@@ -100,6 +100,7 @@ function TeamSummary() {
           label="Search Team..."
           type="search"
           variant="filled"
+		  color="secondary"
           value={searchTerm}
           onChange={(event) => setSearchTerm(event.target.value)}
           padding={2}
@@ -126,78 +127,87 @@ function TeamSummary() {
                         : "primary"
                 }
               >
-                <Card style={{ backgroundColor: "#0A182F", transition: "all 0.3s ease", overflow: 'hidden' }} raised>
-				<CardActionArea
-						onClick={() => handleExpandClick(team.teamId)}
-						sx={{
-							transition: "all 0.3s ease-in-out",
-							":hover": {
-								backgroundColor: "#122B54",
-							},
-							minHeight: "350px"
-						}}
-					>	
-                  <CardMedia
-                    component="img"
-                    image={getLogoPath(team.abbreviation)}
-                    alt={team.teamFullName}
-                  />
-                  <CardContent>
-                    <Typography variant="h6" color="white" component="div">
-                      {team.teamFullName}
-                    </Typography>
-                    <Typography color="white">Points: {team.points}</Typography>
-                  </CardContent>
-                  <Collapse
-                    in={expandedId === team.teamId}
-                    timeout="auto"
-                    unmountOnExit
+                <Card
+                  style={{
+                    backgroundColor: "#0A182F",
+                    transition: "all 0.3s ease",
+                    overflow: "hidden",
+                  }}
+                  raised
+                >
+                  <CardActionArea
+                    onClick={() => handleExpandClick(team.teamId)}
+                    sx={{
+                      transition: "all 0.3s ease-in-out",
+                      ":hover": {
+                        backgroundColor: "#122B54",
+                      },
+                      minHeight: "350px",
+                    }}
                   >
+                    <CardMedia
+                      component="img"
+                      image={getLogoPath(team.abbreviation)}
+                      alt={team.teamFullName}
+                    />
                     <CardContent>
-                      <Typography color="white" paragraph>
-                        Wins: {team.wins}
+                      <Typography variant="h6" color="white" component="div">
+                        {team.teamFullName}
                       </Typography>
-                      <Typography color="white" paragraph>
-                        Losses: {team.losses}
+                      <Typography color="white">
+                        Points: {team.points}
                       </Typography>
-                      <Typography color="white" paragraph>
-                        Games Played: {team.gamesPlayed}
-                      </Typography>
-                      <CardActions>
-                        <Button
-                          size="small"
-                          component={Link}
-                          href={`/${team.abbreviation}`}
-                        >
-                          Player Stats
-                        </Button>
-                        <Button
-                          size="small"
-                          component="a"
-                          href={`#team-row-${team.teamId}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            const row = document.getElementById(
-                              `team-row-${team.teamId}`,
-                            );
-                            if (row) {
-                              row.scrollIntoView({
-                                behavior: "smooth",
-                                block: "center",
-                              });
-                              setHighlightedRow(team.teamId);
-                              setTimeout(() => {
-                                setHighlightedRow(null);
-                              }, 3000);
-                            }
-                          }}
-                        >
-                          See in Standings
-                        </Button>
-                      </CardActions>
                     </CardContent>
-                  </Collapse>
-				  </CardActionArea>
+                    <Collapse
+                      in={expandedId === team.teamId}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <CardContent>
+                        <Typography color="white" paragraph>
+                          Wins: {team.wins}
+                        </Typography>
+                        <Typography color="white" paragraph>
+                          Losses: {team.losses}
+                        </Typography>
+                        <Typography color="white" paragraph>
+                          Games Played: {team.gamesPlayed}
+                        </Typography>
+                        <CardActions>
+                          <Button
+                            size="small"
+                            component={Link}
+                            href={`/${team.abbreviation}`}
+                          >
+                            Player Stats
+                          </Button>
+                          <Button
+                            size="small"
+                            component="a"
+                            href={`#team-row-${team.teamId}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const row = document.getElementById(
+                                `team-row-${team.teamId}`,
+                              );
+                              if (row) {
+                                row.scrollIntoView({
+                                  behavior: "smooth",
+                                  block: "center",
+                                });
+                                setHighlightedRow(team.teamId);
+                                setTimeout(() => {
+                                  setHighlightedRow(null);
+                                }, 3000);
+                              }
+                            }}
+                          >
+                            See in Standings
+                          </Button>
+                        </CardActions>
+                      </CardContent>
+                    </Collapse>
+                  </CardActionArea>
                 </Card>
               </Badge>
             </Grid>
