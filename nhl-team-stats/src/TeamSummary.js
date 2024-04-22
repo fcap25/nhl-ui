@@ -100,10 +100,10 @@ function TeamSummary() {
           label="Search Team..."
           type="search"
           variant="filled"
-		  color="secondary"
+          color="secondary"
           value={searchTerm}
           onChange={(event) => setSearchTerm(event.target.value)}
-          padding={2}
+          margin="dense"
         />
       </div>
       <Grid container spacing={2} padding={10}>
@@ -213,23 +213,50 @@ function TeamSummary() {
             </Grid>
           ))}
       </Grid>
-      <TableContainer component={Paper} style={{ marginTop: 20 }}>
+      <TableContainer
+        component={Paper}
+        style={{ marginTop: 20, backgroundColor: "#0A182F" }}
+      >
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Team</TableCell>
-              <TableCell align="right">GP (Games Played)</TableCell>
-              <TableCell align="right">W</TableCell>
-              <TableCell align="right">L</TableCell>
-              <TableCell align="right">OT Losses</TableCell>
-              <TableCell align="right">Points</TableCell>
-              <TableCell align="right">Goals For</TableCell>
-              <TableCell align="right">Goals Against</TableCell>
-              <Tooltip title="Penalty Kill Percentage" placement="top-start">
-                <TableCell align="right">PK %</TableCell>
+              <TableCell style={{ color: "white" }}>Team</TableCell>
+              <TableCell style={{ color: "white" }} align="right">
+                GP (Games Played)
+              </TableCell>
+              <TableCell style={{ color: "white" }} align="right">
+                W
+              </TableCell>
+              <TableCell style={{ color: "white" }} align="right">
+                L
+              </TableCell>
+              <TableCell style={{ color: "white" }} align="right">
+                OT Losses
+              </TableCell>
+              <TableCell style={{ color: "white" }} align="right">
+                Points
+              </TableCell>
+              <TableCell style={{ color: "white" }} align="right">
+                Goals For
+              </TableCell>
+              <TableCell style={{ color: "white" }} align="right">
+                Goals Against
+              </TableCell>
+              <Tooltip
+                style={{ color: "white" }}
+                title="Penalty Kill Percentage"
+                placement="top-start"
+              >
+                <TableCell style={{ color: "white" }} align="right">
+                  PK %
+                </TableCell>
               </Tooltip>
-              <TableCell align="right">Shots Per Game</TableCell>
-              <TableCell align="right">Shots Against Per Game</TableCell>
+              <TableCell style={{ color: "white" }} align="right">
+                Shots Per Game
+              </TableCell>
+              <TableCell style={{ color: "white" }} align="right">
+                Shots Against Per Game
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -248,18 +275,36 @@ function TeamSummary() {
                     {row.teamFullName}
                   </Link>
                 </TableCell>
-                <TableCell align="right">{row.gamesPlayed}</TableCell>
-                <TableCell align="right">{row.wins}</TableCell>
-                <TableCell align="right">{row.losses}</TableCell>
-                <TableCell align="right">{row.otLosses}</TableCell>
-                <TableCell align="right">{row.points.toFixed(0)}</TableCell>
-                <TableCell align="right">{row.goalsFor}</TableCell>
-                <TableCell align="right">{row.goalsAgainst}</TableCell>
-                <TableCell align="right">
+                <TableCell style={{ color: "white" }} align="right">
+                  {row.gamesPlayed}
+                </TableCell>
+                <TableCell style={{ color: "white" }} align="right">
+                  {row.wins}
+                </TableCell>
+                <TableCell style={{ color: "white" }} align="right">
+                  {row.losses}
+                </TableCell>
+                <TableCell style={{ color: "white" }} align="right">
+                  {row.otLosses}
+                </TableCell>
+                <TableCell style={{ color: "white" }} align="right">
+                  {row.points.toFixed(0)}
+                </TableCell>
+                <TableCell style={{ color: "white" }} align="right">
+                  {row.goalsFor}
+                </TableCell>
+                <TableCell style={{ color: "white" }} align="right">
+                  {row.goalsAgainst}
+                </TableCell>
+                <TableCell style={{ color: "white" }} align="right">
                   {(row.penaltyKillPct * 100).toFixed(0)}%
                 </TableCell>
-                <TableCell align="right">{row.shotsForPerGame}</TableCell>
-                <TableCell align="right">{row.shotsAgainstPerGame}</TableCell>
+                <TableCell style={{ color: "white" }} align="right">
+                  {row.shotsForPerGame}
+                </TableCell>
+                <TableCell style={{ color: "white" }} align="right">
+                  {row.shotsAgainstPerGame}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
