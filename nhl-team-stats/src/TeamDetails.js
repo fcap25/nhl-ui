@@ -14,6 +14,7 @@ import {
   MenuItem,
   Chip,
   Button,
+  CardActionArea,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -177,17 +178,17 @@ function TeamDetails() {
         />
         <Grid container spacing={2} padding={4}>
           {playerStats[selectedSeason].skaters.map((player) => (
-            <Grid item key={player.playerId} xs={12} sm={6} md={1}>
-              <Card
-                onClick={() => handleExpandClick(player.playerId)}
-                style={{ cursor: "pointer" }}
-              >
+            <Grid item key={player.playerId} xs={12} sm={6} md={1.2}>
+              <Card raised>
+				<CardActionArea
+					onClick={() => handleExpandClick(player.playerId)}
+					style={{ cursor: "pointer" }}
+				>
                 <CardMedia
                   component="img"
-                  //height="140"
                   image={player.headshot}
                   alt={`${player.firstName} ${player.lastName}`}
-                  //raised={true}
+                  raised={true}
                 />
                 <CardContent>
                   <Typography variant="h6">{`${player.firstName.default}`}</Typography>
@@ -206,6 +207,7 @@ function TeamDetails() {
                     <Typography>{`Shooting %: ${(player.shootingPctg * 100).toFixed(0)}`}</Typography>
                   </CardContent>
                 </Collapse>
+				</CardActionArea>
               </Card>
             </Grid>
           ))}
@@ -214,6 +216,7 @@ function TeamDetails() {
           bgcolor={"transparent"}
           style={{ "backdrop-filter": "blur(10px)" }}
           padding={2}
+		  width={"fit-content"}
         >
           <Typography
             variant="h5"
@@ -226,11 +229,12 @@ function TeamDetails() {
         </Box>
         <Grid container spacing={2} padding={4}>
           {playerStats[selectedSeason].goalies.map((player) => (
-            <Grid item key={player.playerId} xs={12} sm={6} md={1}>
-              <Card
-                onClick={() => handleExpandClick(player.playerId)}
-                style={{ cursor: "pointer" }}
-              >
+            <Grid item key={player.playerId} xs={12} sm={6} md={1.5}>
+              <Card raised>
+				<CardActionArea
+					onClick={() => handleExpandClick(player.playerId)}
+					style={{ cursor: "pointer" }}
+				>
                 <CardMedia
                   component="img"
                   //height="140"
@@ -245,7 +249,7 @@ function TeamDetails() {
                 <Collapse
                   in={expandedId === player.playerId}
                   timeout="auto"
-                  unmountOnExit
+				  unmountOnExit
                 >
                   <CardContent>
                     <Typography>{`Games Played: ${player.gamesPlayed}`}</Typography>
@@ -259,6 +263,7 @@ function TeamDetails() {
                     <Typography>{`Shutouts: ${player.shutouts}`}</Typography>
                   </CardContent>
                 </Collapse>
+				</CardActionArea>
               </Card>
             </Grid>
           ))}

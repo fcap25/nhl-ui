@@ -20,6 +20,7 @@ import {
   TableBody,
   Tooltip,
   Link,
+  CardActionArea
 } from "@mui/material";
 import Rink from "./assets/Ice_Rink.png";
 import { abbreviations } from "./Abbr";
@@ -110,7 +111,7 @@ function TeamSummary() {
             team.teamFullName.toLowerCase().includes(searchTerm.toLowerCase()),
           )
           .map((team, index) => (
-            <Grid item key={team.teamId} xs={12} sm={6} md={1.5}>
+            <Grid item key={team.teamId} xs={12} sm={6} md={3} xl={2}>
               <Badge
                 badgeContent={
                   <Typography fontSize={18}>{index + 1}</Typography>
@@ -125,7 +126,17 @@ function TeamSummary() {
                         : "primary"
                 }
               >
-                <Card style={{ backgroundColor: "#0A182F" }}>
+                <Card style={{ backgroundColor: "#0A182F", transition: "all 0.3s ease", overflow: 'hidden' }} raised>
+				<CardActionArea
+						onClick={() => handleExpandClick(team.teamId)}
+						sx={{
+							transition: "all 0.3s ease-in-out",
+							":hover": {
+								backgroundColor: "#122B54",
+							},
+							minHeight: "350px"
+						}}
+					>	
                   <CardMedia
                     component="img"
                     image={getLogoPath(team.abbreviation)}
@@ -186,14 +197,7 @@ function TeamSummary() {
                       </CardActions>
                     </CardContent>
                   </Collapse>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      onClick={() => handleExpandClick(team.teamId)}
-                    >
-                      {expandedId === team.teamId ? "Less Stats" : "More Stats"}
-                    </Button>
-                  </CardActions>
+				  </CardActionArea>
                 </Card>
               </Badge>
             </Grid>
