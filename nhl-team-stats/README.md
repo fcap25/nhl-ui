@@ -1,16 +1,16 @@
 # Docker Setup
 
-build necessary dependencies to docker container
+Build necessary dependencies to docker container.
 
-### `docker build -t my-react-app .`
+### `docker build -t my-react-app .` (Any name can replace my-react-app)
 
-starts container local machine on port 3000 (localhost:3000)
+Starts container local machine on port 3000 (localhost:3000).
 
 ### `docker run -p 3000:3000 my-react-app`
 
-# (OPTION 2)
+# OPTION 2
 
-Make sure to npm install before starting
+Make sure to npm install before starting.
 
 # Getting Started with Create React App
 
