@@ -1,6 +1,6 @@
 # nhl-ui
  
-# Block Apps Nhl-Ui Assesment
+# Block Apps NHL-UI Assesment
 
 Please Switch Directories to /nhl-team-stats to run application
 
