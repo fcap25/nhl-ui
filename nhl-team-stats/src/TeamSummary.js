@@ -91,6 +91,9 @@ function TeamSummary() {
       <Typography variant="h4" gutterBottom align="center">
         Team Summaries
       </Typography>
+	  <Typography color="gold" variant="body2" gutterBottom align="center">
+		(Current 2023-2024 Season)
+	  </Typography>
       <Typography variant="body1" gutterBottom align="center">
         Click on a team to see more stats. (All teams in standings order).
       </Typography>
