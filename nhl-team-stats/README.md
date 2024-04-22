@@ -2,7 +2,9 @@
 
 Build necessary dependencies to docker container.
 
-### `docker build -t my-react-app .` (Any name can replace my-react-app)
+(Any name can replace my-react-app)
+
+### `docker build -t my-react-app .` 
 
 Starts container local machine on port 3000 (localhost:3000).
 
