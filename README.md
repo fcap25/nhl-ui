@@ -12,8 +12,6 @@ Starts container local machine on port 3000 (localhost:3000).
 
 # OPTION 2
 
-Make sure to npm install before starting.
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
